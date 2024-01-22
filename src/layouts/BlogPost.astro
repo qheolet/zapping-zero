@@ -14,11 +14,19 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 	<head>
 		<BaseHead title={title} description={description} />
 		<style>
+
+			body{
+				background-image: url("/maze.jpg");
+				background-position: bottom center;
+				background-size: 100% auto;
+			}
+
 			main {
 				width: calc(100% - 2em);
 				max-width: 100%;
 				margin: 0;
 			}
+
 			.hero-image {
 				width: 100%;
 			}
@@ -29,12 +37,27 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				box-shadow: var(--box-shadow);
 			}
 			.prose {
-				width: 720px;
+				width: 900px;
 				max-width: calc(100% - 2em);
 				margin: auto;
 				padding: 1em;
 				color: rgb(var(--gray-dark));
 			}
+			.prose .column {
+				display: grid;
+				grid-template-columns: 200px auto;
+				
+			}
+			@media (max-width: 1250px) {
+				.prose .column {
+					display: grid;
+					grid-template-columns: auto;
+				}
+				.prose .column aside {
+					display: none;
+				}
+			}
+			
 			.title {
 				margin-bottom: 1em;
 				padding: 1em 0;
@@ -76,7 +99,14 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 						<h1>{title}</h1>
 						<hr />
 					</div>
-					<slot />
+					<div class="column">
+						<aside>
+							<p>The Rough-skinned Newt defends itself with a deadly neurotoxin.</p>
+						</aside>
+						<div class="content-right">
+							<slot />
+						</div>
+					</div>
 				</div>
 			</article>
 		</main>
