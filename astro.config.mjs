@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-	  site: 'https://qheolet.github.io',
+	site: 'https://qheolet.github.io',
+	base: '/zapping-zero',
 	integrations: [mdx(), sitemap()],
 });
