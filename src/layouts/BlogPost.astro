@@ -1,115 +1,186 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
+import type { CollectionEntry } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import BlogAside from "../components/BlogAside.astro";
+import type { MarkdownHeading } from "astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../data/consts";
 
-type Props = CollectionEntry<'blog'>['data'];
-
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+type Props = CollectionEntry<"blog">["data"] & {
+  readTime: string;
+  headings: MarkdownHeading[];
+};
+const URL = Astro.url;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+  readTime,
+  headings,
+  tags
+} = Astro.props;
 ---
 
 <html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-		<style>
+  <head>
+    <BaseHead title={title} description={description} />
+    <style>
+      body {
+        background-image: url("/maze.jpg");
+        background-position: bottom center;
+        background-size: 100% auto;
+      }
 
-			body{
-				background-image: url("/maze.jpg");
-				background-position: bottom center;
-				background-size: 100% auto;
-			}
+      main {
+        width: calc(100% - 2em);
+        max-width: 100%;
+        margin: 0;
+      }
 
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
+      .hero-image {
+        width: 100%;
+      }
+      .hero-image img {
+        display: block;
+        margin: 0 auto;
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+      }
+      .prose {
+        width: 900px;
+        max-width: calc(100% - 2em);
+        margin: auto;
+        padding: 1em;
+        color: rgb(var(--gray-dark));
+      }
+      .prose .column {
+        display: grid;
+        grid-template-columns: 200px auto;
+      }
+      @media (max-width: 1250px) {
+        .prose .column {
+          display: grid;
+          grid-template-columns: auto;
+        }
+        .prose .column aside {
+          display: none;
+;
+		  /* grid-template-rows: auto; */
+        }
+      }
 
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 900px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.prose .column {
-				display: grid;
-				grid-template-columns: 200px auto;
-				
-			}
-			@media (max-width: 1250px) {
-				.prose .column {
-					display: grid;
-					grid-template-columns: auto;
-				}
-				.prose .column aside {
-					display: none;
-				}
-			}
-			
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
-	</head>
+      .title {
+        margin-bottom: 1em;
+        padding: 1em 0;
+        text-align: center;
+        line-height: 1;
+      }
+      .title h1 {
+        margin: 0 0 0.5em 0;
+      }
+      .date {
+        color: rgb(var(--gray));
+      }
+      .last-updated-on {
+        font-style: italic;
+        margin-bottom: 0.5em;
+      }
 
-	<body>
-		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
-					<div class="column">
-						<aside>
-							<p>The Rough-skinned Newt defends itself with a deadly neurotoxin.</p>
-						</aside>
-						<div class="content-right">
-							<slot />
-						</div>
-					</div>
-				</div>
-			</article>
-		</main>
-		<Footer />
-	</body>
+      .read-time {
+        color: rgb(var(--gray));
+        margin-bottom: 0.5em;
+        font-weight: 700;
+        font-size: 16px;
+        font-style: italic;
+      }
+
+      pre.astro-code {
+        box-shadow:
+          rgba(0, 0, 0, 0.4) 0px 2px 4px,
+          rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+          rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+      }
+
+	  .tags{
+
+	  }
+
+	  .tags ul{
+			list-style: none;
+			text-align: center;
+			padding: 0;
+		}
+
+		.tags ul li{
+			display: inline-block;
+			padding: 6px 10px;
+			background-color: var(--accent);
+			margin: 0 5px;
+			font-size: 14px;
+			box-shadow: 3px 3px black;
+			font-weight: bold;
+			border: 1px dashed black;
+
+}
+
+.tags ul li a{ color: black; text-decoration: none;}
+
+    </style>
+  </head>
+
+  <body>
+    <Header />
+    <main>
+      <article>
+        <div class="hero-image">
+          {
+            heroImage && (
+              <img width={1020} height={510} src={heroImage} alt="" />
+            )
+          }
+        </div>
+        <div class="prose">
+          <div class="title">
+            <div class="date">
+              <FormattedDate date={pubDate} />
+
+              {
+                updatedDate && (
+                  <div class="last-updated-on">
+                    Last updated on <FormattedDate date={updatedDate} />
+                  </div>
+                )
+              }
+            </div>
+            {readTime && <div class="read-time">Read Time: {readTime}</div>}
+            <h1>{title}</h1>
+				{tags && tags.length > 0 && <div class="tags">
+								<ul>
+						{tags.map((d)=>{
+							return <li><a href={`/tags/${d.toLowerCase()}`}>{d}</a></li>
+						})}	
+					</ul>
+			  	</div>}
+            <hr />
+          </div>
+
+
+
+          <div class="column">
+            <aside>
+              <BlogAside message={title} URL={URL} headings={headings} />
+            </aside>
+            <div class="content-right">
+              <slot />
+            </div>
+          </div>
+        </div>
+      </article>
+    </main>
+    <Footer />
+  </body>
 </html>

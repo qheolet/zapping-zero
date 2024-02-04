@@ -1,0 +1,106 @@
+---
+import ShareIn from "./icons/ShareIn.astro";
+import ShareX from "./icons/ShareX.astro";
+
+const { URL, message, headings } = Astro.props;
+---
+
+<style>
+  .share-component {
+  }
+
+  .share-component .share-title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .heading .heading-title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .share-component .share-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .heading .heading-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+
+  .heading .heading-list .tag a{
+    padding: 5px 10px;
+    background-color: var(--accent);
+    color: black;
+    border-radius: 40px;
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 3px 3px black;
+  }
+
+
+  .heading .heading-list .depth-3 {
+    padding-left: 10px;
+  }
+  .heading .heading-list .depth-4 {
+    padding-left: 15px;
+  }
+  .heading .heading-list .depth-5 {
+    padding-left: 20px;
+  }
+
+  .heading .heading-list .depth-6 {
+    padding-left: 25px;
+  }
+
+  .share-component .share-list li {
+    display: inline-block;
+  }
+
+  .share-main {
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top:0px
+  }
+</style>
+
+<div class="share-main">
+  <div class="share-component">
+    <span class="share-title">Share</span>
+    <ul class="share-list">
+      <li>
+        <a
+          href={`https://x.com/intent/tweet?text=${message + " " + URL}`}
+          aria-label="Share on X"><ShareX /></a
+        >
+      </li>
+      <li>
+        <a
+          href={`https://www.linkedin.com/shareArticle?mini=true&url=${URL}`}
+          aria-label="Share on LinkedIn"
+        >
+          <ShareIn /></a
+        >
+      </li>
+    </ul>
+  </div>
+  {headings.length > 2 && <div class="heading">
+    <span class="heading-title">Heading</span>
+    <ul class="heading-list">
+      {headings.map((item: { text: string; slug: string; depth: number }) => {
+          return (
+            <li class={`tag  depth-${item.depth}`}>
+              <a href={`#${item.slug}`}>{item["text"]}</a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>}
+</div>

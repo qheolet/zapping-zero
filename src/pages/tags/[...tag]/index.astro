@@ -1,16 +1,23 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../../data/consts';
-import { getCollection } from 'astro:content';
-import FormattedDate from '../../components/FormattedDate.astro';
+import BaseHead from '../../../components/BaseHead.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../../data/consts';
 
-const _post = await getCollection('blog') || [];
-const posts = _post.filter((e)=>!e.data.draft)
-.sort(
-	(a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf()
-);
+import FormattedDate from '../../../components/FormattedDate.astro';
+import { getPostByTag, getTags } from '../../../utils/tags';
+export async function getStaticPaths():Promise<any> {
+	const tags = await getTags()
+
+	return tags.map((tag) => ({
+		params: { tag },
+		props: { tag }
+	}))
+}
+
+const { tag }: {tag: string} = Astro.props
+
+const posts = await getPostByTag(tag)
 ---
 
 <!doctype html>
@@ -75,6 +82,11 @@ const posts = _post.filter((e)=>!e.data.draft)
 			ul a:hover img {
 				box-shadow: var(--box-shadow);
 			}
+
+			.read-time{
+				font-size: 14px;
+				font-weight: bold;
+			}
 			@media (max-width: 720px) {
 				ul {
 					gap: 0.5em;
@@ -94,22 +106,29 @@ const posts = _post.filter((e)=>!e.data.draft)
 	</head>
 	<body>
 		<Header />
+		
 		<main>
+			<section><h1>{tag?.charAt(0).toUpperCase() + tag?.slice(1)}</h1></section>
 			<section>
 				<ul>
 					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.slug}/`}>
-									<img width={720} height={360} src={post.data.heroImage} alt="" />
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-									<p>{post.data.description}</p>
-								</a>
-							</li>
-						))
+						posts.map(async (post) => {
+							const {remarkPluginFrontmatter} = await post.render()
+							return ( 
+								<li>
+									<a href={`/blog/${post.slug}/`}>
+										<img width={720} height={360} src={post.data.heroImage} alt="" />
+										<h4 class="title">{post.data.title}</h4>
+										<p class="date">
+											<FormattedDate date={post.data.pubDate} /> <br />
+											<span class="read-time">{remarkPluginFrontmatter.minutesRead}</span>
+										</p>
+
+										<p>{post.data.description}</p>
+									</a>
+								</li>
+							)
+						})
 					}
 				</ul>
 			</section>

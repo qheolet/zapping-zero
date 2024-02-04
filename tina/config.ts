@@ -29,54 +29,6 @@ export default defineConfig({
   schema: {
     collections: [
       {
-        name: "page",
-        label: "Pages",
-        path: "src/content/page",
-        format:"mdx",
-        fields: [
-          {
-            type: 'image',
-            label: 'Hero image',
-            name: 'heroImage',
-          },
-          {
-            type: 'datetime',
-            name: 'pubDate',
-            label: 'pubDate'
-          },
-          {
-            type: 'datetime',
-            name: 'updatedDate',
-            label: 'updatedDate'
-          },
-          {
-            type: "string",
-            name: "title",
-            label: "Title",
-            isTitle: true,
-            required: true,
-          },
-          {
-            type: "string",
-            name: "description",
-            label: "Description",
-          },
-          {
-            type: "rich-text",
-            name: "body",
-            label: "Body",
-            isBody: true,
-          },
-
-          {
-            type: 'boolean',
-            name: 'Draft',
-            label: 'draft'
-          }
-          
-        ],
-      },
-      {
         name: "post",
         label: "Posts",
         path: "src/content/blog",
@@ -120,8 +72,44 @@ export default defineConfig({
             type: 'boolean',
             name: 'Draft',
             label: 'draft'
+          },
+          {
+            type: 'string',
+            name: 'tags',
+            label: 'Tags',
+            description: 'Tags for this post',
+            list: true,
+            ui: {
+              component: 'tags',
+            }
           }
           
+        ],
+      },
+      {
+        name: "page",
+        label: "Pages",
+        path: "src/content/page",
+        format:"mdx",
+        fields: [
+          {
+            type: 'image',
+            label: 'Hero image',
+            name: 'heroImage',
+          },
+          {
+            type: "string",
+            name: "title",
+            label: "Title",
+            isTitle: true,
+            required: true,
+          },
+          {
+            type: "rich-text",
+            name: "body",
+            label: "Body",
+            isBody: true,
+          }
         ],
       },
     ],

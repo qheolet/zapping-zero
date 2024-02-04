@@ -1,7 +1,7 @@
 ---
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
-import '../styles/global.css';
+import '../styles/global.scss';
 
 interface Props {
 	title: string;
@@ -21,8 +21,10 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <meta name="generator" content={Astro.generator} />
 
 <!-- Font preloads -->
-<link rel="preload" href="/fonts/Monserrat-Regular.ttf" as="font" type="font/ttf" crossorigin />
-<link rel="preload" href="/fonts/Monserrat-Bold.ttf" as="font" type="font/ttf" crossorigin />
+<link rel="preload" href="/fonts/Montserrat-Regular.ttf" as="font" type="font/ttf" crossorigin />
+<link rel="preload" href="/fonts/Montserrat-Bold.ttf" as="font" type="font/ttf" crossorigin />
+<link rel="preload" href="/fonts/IndieFlower-Regular.ttf" as="font" type="font/ttf" crossorigin />
+
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
