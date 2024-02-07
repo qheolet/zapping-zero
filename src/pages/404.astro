@@ -3,7 +3,6 @@ import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../data/consts";
-
 ---
 
 <!doctype html>
@@ -14,11 +13,11 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../data/consts";
   </head>
   <body>
     <Header />
-    <main>
+    <main id="page-404">
       <section>
         <h1>404</h1>
         <img src="/images/workingbn.gif" />
-      </section> 
+      </section>
     </main>
     <Footer />
   </body>

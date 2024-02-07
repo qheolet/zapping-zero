@@ -1,0 +1,52 @@
+---
+import { getRelatePost } from "../utils/tags";
+
+const { tags, slug } = Astro.props;
+
+const relate = await getRelatePost(tags, slug);
+---
+
+<style lang="scss">
+  .relate-links {
+    ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: space-between;
+
+      li {
+        a {
+          color: black;
+          padding: 5px 10px;
+          text-decoration: none;
+          background-color: var(--accent);
+          //   font-weight: bold;
+        }
+        &:first-child {
+          text-align: left;
+          transform: rotateY(-6deg);
+          box-shadow: 4px 5px black;
+        }
+        &:last-child {
+          text-align: right;
+          transform: rotateY(6deg);
+          box-shadow: -4px 5px black;
+        }
+      }
+    }
+  }
+</style>
+
+{
+  (
+    <div class="relate-links">
+      <ul>
+        {relate.map((e) => (
+          <li>
+            <a href={e.link}>{e.name}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}

@@ -5,8 +5,9 @@ import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../data/consts";
 import FormattedDate from "../components/FormattedDate.astro";
 import { getPosts, getTags } from "../utils/tags";
+import type { PaginateFunction } from "astro";
 
-const posts = await getPosts(12);
+const posts = await getPosts(20);
 const tags = await getTags();
 ---
 
@@ -23,42 +24,55 @@ const tags = await getTags();
         main {
           width: 960px;
         }
-      }
 
-      section ul {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        li {
-          width: calc(50% - 1rem);
-          * {
-            text-decoration: none;
-            transition: 0.2s ease;
+        section ul {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 2rem;
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          li {
+            width: calc(50% - 1rem);
+            * {
+              text-decoration: none;
+              transition: 0.2s ease;
+            }
+            &:first-child {
+              width: 100%;
+              margin-bottom: 1rem;
+              text-align: center;
+            }
+            &:first-child {
+              width: 100%;
+              margin-bottom: 1rem;
+              text-align: center;
+            }
+
+            &:first-child img {
+              width: 100%;
+            }
+            &:first-child .title {
+              font-size: 2.369rem;
+            }
+            img {
+              margin-bottom: 0.5rem;
+              border-radius: 12px;
+            }
+            a {
+              display: block;
+              &:hover h4,
+              &:hover .date {
+                color: rgb(var(--accent));
+              }
+              &:hover img {
+                box-shadow: var(--box-shadow);
+              }
+            }
           }
         }
       }
 
-      section ul li:first-child {
-        width: 100%;
-        margin-bottom: 1rem;
-        text-align: center;
-      }
-      section ul li:first-child img {
-        width: 100%;
-      }
-      section ul li:first-child .title {
-        font-size: 2.369rem;
-      }
-      section ul li img {
-        margin-bottom: 0.5rem;
-        border-radius: 12px;
-      }
-      section ul li a {
-        display: block;
-      }
       .title {
         margin: 0;
         color: rgb(var(--black));
@@ -68,12 +82,9 @@ const tags = await getTags();
         margin: 0;
         color: rgb(var(--gray));
       }
-      section ul li a:hover h4,
-      section ul li a:hover .date {
-        color: rgb(var(--accent));
-      }
-      section ul a:hover img {
-        box-shadow: var(--box-shadow);
+
+      .description {
+        color: black;
       }
 
       .read-time {
@@ -96,28 +107,25 @@ const tags = await getTags();
         }
       }
       .tags {
-      }
-
-      .tags ul {
-        list-style: none;
-        text-align: center;
-        padding: 0;
-      }
-
-      .tags ul li {
-        display: inline-block;
-        padding: 6px 10px;
-        background-color: var(--accent);
-        margin: 0 5px 10px;
-        font-size: 14px;
-        box-shadow: 3px 3px black;
-        font-weight: bold;
-        border: 1px dashed black;
-      }
-
-      .tags ul li a {
-        color: black;
-        text-decoration: none;
+        ul {
+          list-style: none;
+          text-align: center;
+          padding: 0;
+          li {
+            display: inline-block;
+            padding: 6px 10px;
+            background-color: var(--accent);
+            margin: 0 5px 10px;
+            font-size: 14px;
+            box-shadow: 3px 3px black;
+            font-weight: bold;
+            border: 1px dashed black;
+            a {
+              color: black;
+              text-decoration: none;
+            }
+          }
+        }
       }
     </style>
   </head>
@@ -146,7 +154,7 @@ const tags = await getTags();
                       </span>
                     </p>
 
-                    <p>{post.data.description}</p>
+                    <p class="description">{post.data.description}</p>
                   </a>
                 </li>
               );

@@ -1,3 +1,6 @@
 {
-    "svg.preview.background": "editor"
+    "svg.preview.background": "editor",
+    "editor.defaultFormatter": "astro-build.astro-vscode",
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true
 }
