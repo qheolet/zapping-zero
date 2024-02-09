@@ -1,8 +1,10 @@
 ---
+import Copy from "./icons/Copy.tsx";
 import ShareIn from "./icons/ShareIn.astro";
 import ShareX from "./icons/ShareX.astro";
 
 const { URL, message, headings, tags } = Astro.props;
+const canonicalURL: URL = Astro.url;
 ---
 
 <style lang="scss">
@@ -111,41 +113,42 @@ const { URL, message, headings, tags } = Astro.props;
           <ShareIn /></a
         >
       </li>
+      <li style={"width:30px;heigth:30px"}>
+        <Copy url={canonicalURL} client:only="solid-js" />
+      </li>
     </ul>
   </div>
-  {
-    headings.length > 2 && (
-      <div class="heading">
-        <span class="heading-title">Heading</span>
-        <ul class="heading-list">
-          {headings.map(
-            (item: { text: string; slug: string; depth: number }) => {
-              return (
-                <li class={`tag  depth-${item.depth}`}>
-                  <a href={`#${item.slug}`}>{item["text"]}</a>
-                </li>
-              );
-            }
-          )}
-        </ul>
-      </div>
-    )
-  }
-
-  {
-    tags && tags.length > 0 && (
-      <div class="tags">
-        <span class="tags-title">Tags</span>
-        <ul>
-          {tags.map((d: string) => {
-            return (
-              <li>
-                <a href={`/tags/${d.toLowerCase()}`}>{d}</a>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    )
-  }
 </div>
+{
+  headings.length > 2 && (
+    <div class="heading">
+      <span class="heading-title">Heading</span>
+      <ul class="heading-list">
+        {headings.map((item: { text: string; slug: string; depth: number }) => {
+          return (
+            <li class={`tag  depth-${item.depth}`}>
+              <a href={`#${item.slug}`}>{item["text"]}</a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  )
+}
+
+{
+  tags && tags.length > 0 && (
+    <div class="tags">
+      <span class="tags-title">Tags</span>
+      <ul>
+        {tags.map((d: string) => {
+          return (
+            <li>
+              <a href={`/tags/${d.toLowerCase()}`}>{d}</a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  )
+}

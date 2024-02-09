@@ -13,6 +13,7 @@ type Props = CollectionEntry<"blog">["data"] & {
   headings: MarkdownHeading[];
 };
 const URL = Astro.url;
+
 const {
   title,
   description,
@@ -120,7 +121,7 @@ const {
         <div class="prose">
           <div class="title">
             <div class="date">
-              <FormattedDate date={pubDate} />
+              {pubDate && <FormattedDate date={pubDate} />}
 
               {
                 updatedDate && (

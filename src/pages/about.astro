@@ -1,21 +1,20 @@
 ---
-import Layout from '../layouts/BlogPost.astro';
+import Layout from "../layouts/BlogPost.astro";
 
 // Import a single file
-import * as about from '../content/page/About.mdx';
-import type { MarkdownHeading } from 'astro';
+import * as about from "../content/page/About.mdx";
+import type { MarkdownHeading } from "astro";
 
 const Content = about.Content;
-const heading:MarkdownHeading[] = about.getHeadings()
+const heading: MarkdownHeading[] = about.getHeadings();
 ---
 
 <Layout
-	title={about.frontmatter.title}
-	description=""
-	pubDate={new Date('August 08 2021')}
-	heroImage={about.frontmatter.heroImage}
-	readTime=''
-	headings={[]}
+  title={about.frontmatter.title}
+  description=""
+  heroImage={about.frontmatter.heroImage}
+  readTime=""
+  headings={heading}
 >
-<Content />
+  <Content />
 </Layout>
